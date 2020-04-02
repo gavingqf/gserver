@@ -207,7 +207,7 @@ function on_system_close()
     rolemgr:SaveAll();
 
     -- wait for all sql executed.
-    -- MYSQL:Wait();
+    MYSQL:Wait();
 end
 ----------------------------------------------------------
 -------------------------------------server info start--------------------------------------------
