@@ -10,7 +10,9 @@ This framework include the following functions:
 3, Mysql with Asynchronous and Synchroous interface.  
 4, Redis interface.  
 5, Log with Asynchronous and Synchroous interface.  
-6, astar and so no.  
+6, astar  
+7, net builder packet tool with lua_protobuf.  
+8, common utility functions such as ansi2utf, and utf2ansi.  
 
 All the above functions, the related interfaces or notes you can find in main.lua.  
 This framework can be use in server, especially for game server.  
