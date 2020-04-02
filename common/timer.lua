@@ -15,7 +15,7 @@ timer_ret = {
 local TimerModule = {
 }
 
--- delay is timer time,
+-- delay is timer time: unit is millisecond
 -- circle whether is circle timer: true or >= 1
 -- function(para, timer_id) end
 -- return timer id, nil if error and err is error string
