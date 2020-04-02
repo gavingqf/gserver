@@ -5,7 +5,7 @@ This is a server framework, especially for game server, with lua language.
 All lua libraries are included in common fold. 
 
 This framework includes the following functions:  
-1, TCP protocl which can listen, connect with client or inner servers with config.  
+1, TCP protocl which can listen, connect with client or inner servers with config(as game fold *.xml).   
 2, httpserver interface for http protocol.  
 3, High effiency timer(time wheel).  
 4, Mysql with Asynchronous and Synchroous interface.  
