@@ -13,5 +13,4 @@ This framework include the following functions:
 6, astar and so no.  
 
 All the above functions, the related interfaces or notes you can find in main.lua.  
-
 This framework can be use in server, especially for game server.  
