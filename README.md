@@ -1,4 +1,4 @@
-# gavin
+# === gserver note ===
 game framework with lua logic
 
 This is a server framework, especially for game server, with lua language.
