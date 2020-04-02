@@ -20,6 +20,8 @@ In a word, you can find anything here for server programming(as game server).
 All the above functions, the related interfaces or notes you can find in main.lua.  
 This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com  
 
+If you want to see any examples, you can have a look at main.lua.  
+
 Thanks for the following code or web：  
 1,lua5.3.  
 2,asio.    
