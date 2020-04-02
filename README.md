@@ -15,4 +15,4 @@ This framework include the following functions:
 8, common utility functions such as ansi2utf, and utf2ansi.  
 
 All the above functions, the related interfaces or notes you can find in main.lua.  
-This framework can be use in server, especially for game server.  
+This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com  
