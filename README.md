@@ -21,6 +21,6 @@ All the above functions, the related interfaces or notes you can find in main.lu
 This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com  
 
 Thanks for the following code or web：  
-1，lua5.3.  
-2, asio.    
-3, lua_protobuf.
+1,lua5.3.  
+2,asio.    
+3,lua_protobuf.
