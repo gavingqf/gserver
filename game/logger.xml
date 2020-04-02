@@ -1,0 +1,33 @@
+<logger>
+	<up> <!-- up config -->
+		<level critical="true"/>
+		<level info="true"/>
+		<level warn="true"/>
+		<level important="true"/>
+		<level debug="true"/>
+	</up>
+
+	<lower> <!-- lower config-->
+		<db>
+			<level debug="false" />
+			<level critical="true"/>
+			<level info="false"/>
+			<level warn="false"/>
+		</db>
+
+		<net>
+			<level debug="false" />
+			<level critical="true"/>
+			<level info="false"/>
+			<level warn="false"/>
+		</net>
+
+		<pipe>
+			<level debug="false" />
+			<level critical="true"/>
+			<level info="false"/>
+			<level warn="false"/>
+		</pipe>
+	</lower>
+
+</logger>

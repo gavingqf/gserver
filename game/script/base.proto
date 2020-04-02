@@ -1,0 +1,35 @@
+syntax = "proto2";
+package SProtoSpace;
+
+ message Phone {
+   optional string name        = 1;
+   optional int64  phonenumber = 2;
+}
+
+// chat req
+message cs_chat_req {
+   optional string content     = 1;
+}
+
+// chat ack
+message sc_chat_ack {
+   optional int32 ret = 1;
+}
+
+message cs_time_req {
+
+}
+
+message sc_time_ack {
+   optional string time = 1;
+}
+
+// == MsgId == 
+enum MsgId {
+   cs_enter_game_req_id = 1;
+   cs_chat_req_id       = 2;
+   sc_chat_ack_id       = 3;
+   cs_time_req_id       = 4;
+   sc_time_ack_id       = 5;
+   
+}

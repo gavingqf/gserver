@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<config>
+	<connections>
+		<server id="2-2-1-1"/>
+		<connection mode="connect"> <!--gateserver-->
+			<item id="2-2-3-1" remoteip="127.0.0.1" remoteport="8346" recvbuf="1310720" sendbuf="131072"/>
+			<item id="2-2-3-2" remoteip="127.0.0.1" remoteport="8347" recvbuf="1310720" sendbuf="131072"/>
+		</connection>
+	</connections>
+</config>
