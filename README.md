@@ -14,6 +14,7 @@ This framework includes the following functions:
 7, Astar path finding for 2d game.  
 8, Net builder packet tool with lua_protobuf, as you can choose google protobuf or other protocol format.   
 9, Common utility functions such as ansi2utf, and utf2ansi, which are wrapped in utility.lua.  
+In a word, you can find anything here for server programming(as game server).
 
 All the above functions, the related interfaces or notes you can find in main.lua.  
 This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com  
