@@ -21,6 +21,8 @@ All the above functions, the related interfaces or notes you can find in main.lu
 This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com  
 
 If you want to see any examples, you can have a look at main.lua.  
+If you wanto to known the mechanism of the low c++ engine which wraps the net, mysql, timer module, you can look at  
+the ppt file.
 
 **Thanks for the following code or web:**  
   1,lua5.3.  
