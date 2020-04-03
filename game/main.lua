@@ -285,6 +285,12 @@ function on_client_connect(session, connected)
             TCP:ClientTo(sess, 1, data);
         end, {session, 0});
     else
+        local LSession = LSessions:get(session);
+        assert(LSession);
+        if not LSession then
+            Log:Crit("can not find " .. session .. " lua session");
+            return ;
+        end
         local ip, port = LSession.ip, LSession.port;
         Log:Crit(BuildString("find ", session, "(", ip, ", ", port, ") disconnect out"));
         
