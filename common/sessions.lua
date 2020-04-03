@@ -16,7 +16,7 @@ function LSessions:create(session)
         ip   = info.ip,
         port = info.port,
         Send = function(msgid, data)
-            net.client_send(self.sess, msgid, data, #data);
+            net.client_send(self.session, msgid, data, #data);
         end
     }
     self[session] = LSession;
