@@ -9,6 +9,7 @@ require "common.class"
 require "common.macros"
 require "common.utility"
 local json = require "common.json"
+local LSessions = require "common.sessions"
 
 -- load proto method.
 local function LoadProto()
@@ -257,7 +258,8 @@ end
 -- connected whether is connected: true or false.
 function on_client_connect(session, connected)
     if connected then
-        local ip, port = common.get_session_info(session);
+        local LSession = LSessions:create(session);
+        local ip, port = LSession.ip, LSession.port;
         Log:Crit(BuildString("find ", session, "(", ip, ", ", port, ") connect in"));
 
         local role = rolemgr:Create();
@@ -283,9 +285,12 @@ function on_client_connect(session, connected)
             TCP:ClientTo(sess, 1, data);
         end, {session, 0});
     else
-        local ip, port = common.get_session_info(session);
+        local ip, port = LSession.ip, LSession.port;
         Log:Crit(BuildString("find ", session, "(", ip, ", ", port, ") disconnect out"));
         
+        -- remove it from sessions.
+        LSessions:remove(session);
+
         local role = clients:Find(session);
         if role then
             role:OnExit();
