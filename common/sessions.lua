@@ -1,4 +1,5 @@
 local net = net;
+local common = common;
 
 -- sessions manager.
 local LSessions = {
