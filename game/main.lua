@@ -259,7 +259,7 @@ end
 function on_client_connect(session, connected)
     if connected then
         local LSession = LSessions:create(session);
-        local ip, port = LSession.ip, LSession.port;
+        local ip, port = LSession:GetIP(), LSession:GetPort();
         Log:Crit(BuildString("find ", session, "(", ip, ", ", port, ") connect in"));
 
         local role = rolemgr:Create();
@@ -291,7 +291,7 @@ function on_client_connect(session, connected)
             Log:Crit("can not find " .. session .. " lua session");
             return ;
         end
-        local ip, port = LSession.ip, LSession.port;
+        local ip, port = LSession:GetIP(), LSession:GetPort();
         Log:Crit(BuildString("find ", session, "(", ip, ", ", port, ") disconnect out"));
         
         -- remove it from sessions.
