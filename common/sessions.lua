@@ -14,11 +14,14 @@ function LSessions:create(session)
     local ip, port = common.get_session_info(session);
     local LSession = { -- new session.
         session = session,
-        ip   = info.ip,
-        port = info.port,
-        Send = function(msgid, data)
+        ip    = info.ip,
+        port  = info.port,
+        Send  = function(msgid, data)
             net.client_send(self.session, msgid, data, #data);
         end
+        GetIP  = function() return self.ip end
+        GetPort = function() return self.port end
+        GetSession = function() return self.session end 
     }
     self[session] = LSession;
     return LSession;
