@@ -1,4 +1,4 @@
-<logger>
+<logger path="./">
 	<up> <!-- up config -->
 		<level critical="true"/>
 		<level info="true"/>
