@@ -16,13 +16,14 @@ function LSessions:create(session)
         session = session,
         ip    = info.ip,
         port  = info.port,
-        Send  = function(msgid, data)
+        -- Send, GetIP, GetPort, GetSession function.
+        Send  = function(self, msgid, data)
             net.client_send(self.session, msgid, data, #data);
-        end
-        GetIP  = function() return self.ip end
-        GetPort = function() return self.port end
-        GetSession = function() return self.session end 
-    }
+        end,
+        GetIP  = function(self) return self.ip end,
+        GetPort = function(self) return self.port end,
+        GetSession = function(self) return self.session end,
+    };
     self[session] = LSession;
     return LSession;
 end
