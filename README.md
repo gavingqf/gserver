@@ -6,7 +6,7 @@ All lua libraries are included in common fold.
 
 **This framework includes the following functions:**  
   1, TCP protocl which can listen, connect with client or inner servers with config(as game fold *.xml).   
-  2, httpserver interface for http protocol.  
+  2, httpserver interface for http protocol(for short connection http).   
   3, High efficiency timer(time wheel).  
   4, Mysql with Asynchronous and Synchronous interface.  
   5, Redis interface.  
