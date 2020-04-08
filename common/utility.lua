@@ -88,25 +88,6 @@ function trycall(func, ...)
     return xpcall(function() func(unpack(args)) end, __TRACKBACK__);
 end
 
---install our crazy loader! MUST BE HERE FOR NACL
-function InstallSpecialLoader()
-    local loadfn = function(modulename)
-        local errmsg = "";
-        local modulepath = string.gsub(modulename, "%.", "/");
-        for path in string.gmatch(package.path, "([^;]+)") do
-            local filename = string.gsub(path, "%?", modulepath);
-            filename = string.gsub(filename, "\\", "/");
-            local result = kleiloadlua(filename);
-            if result then
-               return result;
-            end
-            errmsg = errmsg .. "\n\tno file '" .. filename .. "' (checked with custom loader)";
-        end
-        return errmsg;   
-    end
-    table_insert(package.loaders, 1, loadfn);
-end
-
 -- global rand method.
 function GetRand(min, max)
 	local rand = common.rand;
@@ -210,36 +191,5 @@ function GetProbIndexPro(prob_items, index, prob_sum)
 		vec_sum[i] = prob_items[i][index];
 	end
 	return GetVecProbIndex(vec_sum, prob_sum);
-end
-
-function DeepCopy(object)
-    local SearchTable = {}
-
-    local function Func(object)
-        if type(object) ~= "table" then
-            return object
-        end
-        local NewTable = {}
-        SearchTable[object] = NewTable
-        for k, v in pairs(object) do
-            NewTable[Func(k)] = Func(v)
-	  end	  
-        return setmetatable(NewTable, getmetatable(object))
-    end
-
-    return Func(object)
-end
-
-function table.invert(t)
-	local invt = {}
-	for k, v in pairs(t) do
-		invt[v] = k
-	end
-	return invt
-end
-
---Clamps a number between two values
-function math.clamp(num, min, max)
-	return num <= min and min or (num >= max and max or num)
 end
 
