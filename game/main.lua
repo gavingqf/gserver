@@ -73,12 +73,12 @@ require "test_redis"
 -- server_send(server_id, attach_id, msg_id, data, len)
 -- client_send(client_id, data, len);
 -- client_close(session)
--- http_start(ip, port, function() end)
+-- http_start(ip, port, function() return "" end)
 
 -- timer interface: timer.lua
 -- id = add_timer(time, circle, para, funcion)
 -- kill_timer(id)
--- get_timer_left_time(id);
+-- get_left_time(id);
 
 -- common
 -- local_server_id
@@ -99,7 +99,7 @@ require "test_redis"
 -- mysql_async_query_with_res(group, index, sql, function(ret, res) end)
 -- mysql_escape(data)
 
---
+-- redis interface：credis.lua
 -- redis 
 --
 
@@ -114,7 +114,7 @@ require "test_redis"
 -- on_client_connect()
 --
 
--- system close 
+-- system close callback(can use ctrl + c to exit)
 -- on_system_close
 -----------------------------------------------------------------------------------
 
