@@ -1,4 +1,4 @@
-<logger path="./">
+<logger path="./"> <!--path is log fold-->>
 	<up> <!-- up config -->
 		<level critical="true"/>
 		<level info="true"/>
