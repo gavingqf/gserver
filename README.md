@@ -1,5 +1,5 @@
 # === gserver introduce ===
-A server framework with lua logic
+A server framework with lua logic, which is platform independent.
 
 This is a server framework, especially for game server, with lua language.
 All lua libraries are included in common fold. 
