@@ -144,7 +144,8 @@ function init()
     end
     -- log out.
     Log:Crit("listen ok");
-    
+   
+    --[[
     -- init mysql.
     if not MYSQL:Init(MAIN_MYSQL_HANDLE, MAIN_MYSQL_COUNT) then
         Log:SCrit("mysql init error");
@@ -159,6 +160,7 @@ function init()
         return false;
     end
     Log:Crit("connect mysql ok");
+    --]]
 
     --[[
     local data = "gavin";
