@@ -9,6 +9,7 @@ local TCPModule = {
 
 }
 
+-- tcp init.
 function TCPModule:Init()
     return net.net_init();
 end
