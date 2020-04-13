@@ -172,12 +172,8 @@ function init()
     local ret, data = net.http_post("127.0.0.1", "8000", "/?type=inner", "");
     if ret then Log:Crit("data: " .. data) end
     --]]
-    local ret1, data1 = net.http_get("127.0.0.1", "8000", "/?type=inner", "");
-    if ret1 then 
-        Log:Crit("data: " .. data1);
-    else
-        Log:Crit("error: " .. data1);
-    end
+    local data = TCP:HttpGetReq("127.0.0.1", "8000", "/?type=inner", "");
+    Log:Crit("data: " .. data);
     
     -- file is require file path, para is require parameter like (a & b).
     -- must return data or nil.

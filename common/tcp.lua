@@ -14,8 +14,8 @@ function TCPModule:Init()
 end
 
 -- return true or false, error message.
-function TCPModule:HttpStart(ip, port, func)
-    local r, msg = net.http_start(ip, port, func);
+function TCPModule:HttpStart(ip, port, page, data)
+    local r, msg = net.http_start(ip, port, page, data);
     if not r then 
         Log:SCrit("http start error: " .. msg);
     end
@@ -23,17 +23,17 @@ function TCPModule:HttpStart(ip, port, func)
 end
 
 -- http client get
-function TCPModule:HttpGetReq(ip, port, data, func)
-    local r, data = net.http_get(ip, port, data, func);
-    if r ~= 0 then
+function TCPModule:HttpGetReq(ip, port, page, data)
+    local r, data = net.http_get(ip, port, page, data);
+    if false == r then
         Log:Crit("http get error: " .. data);
     end
     return data;
 end
 -- http client post
-function TCPModule::HttpPostReq(ip, port, data, func)
+function TCPModule:HttpPostReq(ip, port, data, func)
     local r, data = net.http_post(ip, port, data, func);
-    if r ~= 0 then
+    if false == r then
         Log:Crit("http get error: " .. data);
     end
     return data;
