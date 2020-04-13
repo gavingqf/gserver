@@ -126,6 +126,10 @@ require "test_redis"
 -- global init.
 -- listen server (ip, port)
 function init()
+    -- variable check.
+    global_variable_check();
+
+    -- tcp init.
     TCP:Init();
 
     -- node init.
@@ -244,7 +248,7 @@ end
 -- connected true connect, else if disconnect.
 -- server is far id.
 function on_server_net_connect(server, connected)
-    local local_id = local_server_id;
+    local local_server_id = common.local_server_id();
     local far_type = common.get_server_type(server);
     if connected then -- connect
         servers:Add(server);

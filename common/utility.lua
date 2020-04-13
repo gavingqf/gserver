@@ -13,6 +13,27 @@ local os            = os;
 -- c export to lua space.
 local common        = common;
 
+-- global variable check.
+function global_variable_check()
+	local mt = {
+        __index = function(_, key)
+            local info = debug.getinfo(2, "S")
+            if info and info.what ~= "main" and info.what ~= "C" then
+                print("visit a undefined variable: " .. key);
+            end
+            return rawget(_G, key);
+        end,
+        __newindex = function(_, key, value)
+            local info = debug.getinfo(2, "S")
+            if info and info.what ~= "main" and info.what ~= "C" then
+                print("asign a undefined variable:" .. key);
+            end
+            return rawset(_G, key, value);
+        end
+    }
+    setmetatable(_G, mt);
+end
+
 -- version.
 if _VERSION ~= "Lua 5.1" then
 	unpack = table.unpack;
@@ -86,6 +107,25 @@ end
 function trycall(func, ...)
     local args = {...}
     return xpcall(function() func(unpack(args)) end, __TRACKBACK__);
+end
+
+--install our crazy loader! MUST BE HERE FOR NACL
+function InstallSpecialLoader()
+    local loadfn = function(modulename)
+        local errmsg = "";
+        local modulepath = string.gsub(modulename, "%.", "/");
+        for path in string.gmatch(package.path, "([^;]+)") do
+            local filename = string.gsub(path, "%?", modulepath);
+            filename = string.gsub(filename, "\\", "/");
+            local result = kleiloadlua(filename);
+            if result then
+               return result;
+            end
+            errmsg = errmsg .. "\n\tno file '" .. filename .. "' (checked with custom loader)";
+        end
+        return errmsg;   
+    end
+    table_insert(package.loaders, 1, loadfn);
 end
 
 -- global rand method.
@@ -191,5 +231,36 @@ function GetProbIndexPro(prob_items, index, prob_sum)
 		vec_sum[i] = prob_items[i][index];
 	end
 	return GetVecProbIndex(vec_sum, prob_sum);
+end
+
+function DeepCopy(object)
+    local SearchTable = {}
+
+    local function Func(object)
+        if type(object) ~= "table" then
+            return object
+        end
+        local NewTable = {}
+        SearchTable[object] = NewTable
+        for k, v in pairs(object) do
+            NewTable[Func(k)] = Func(v)
+	  end	  
+        return setmetatable(NewTable, getmetatable(object))
+    end
+
+    return Func(object)
+end
+
+function table.invert(t)
+	local invt = {}
+	for k, v in pairs(t) do
+		invt[v] = k
+	end
+	return invt
+end
+
+--Clamps a number between two values
+function math.clamp(num, min, max)
+	return num <= min and min or (num >= max and max or num)
 end
 
