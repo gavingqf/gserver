@@ -168,6 +168,17 @@ function init()
     Log:Crit(data_md5);
     --]]
 
+     --[[ http client interface.
+    local ret, data = net.http_post("127.0.0.1", "8000", "/?type=inner", "");
+    if ret then Log:Crit("data: " .. data) end
+    --]]
+    local ret1, data1 = net.http_get("127.0.0.1", "8000", "/?type=inner", "");
+    if ret1 then 
+        Log:Crit("data: " .. data1);
+    else
+        Log:Crit("error: " .. data1);
+    end
+    
     -- file is require file path, para is require parameter like (a & b).
     -- must return data or nil.
     local r = TCP:HttpStart("0", "8080", function(url, method, para)
