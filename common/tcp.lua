@@ -22,7 +22,8 @@ function TCPModule:HttpStart(ip, port, page, data)
     return r;
 end
 
--- http client get
+-- http client get:
+--                 get (ip, port, page, data)
 function TCPModule:HttpGetReq(ip, port, page, data)
     local r, data = net.http_get(ip, port, page, data);
     if false == r then
@@ -30,7 +31,8 @@ function TCPModule:HttpGetReq(ip, port, page, data)
     end
     return data;
 end
--- http client post
+-- http client post:
+--                 post(ip, port, page, data)
 function TCPModule:HttpPostReq(ip, port, data, func)
     local r, data = net.http_post(ip, port, data, func);
     if false == r then
@@ -39,6 +41,7 @@ function TCPModule:HttpPostReq(ip, port, data, func)
     return data;
 end
 
+-- tcp listen on (ip, port)
 function TCPModule:Listen(ip, port)
     local ret, err = net.tcp_listen(ip, port);
     if not ret then
@@ -47,6 +50,7 @@ function TCPModule:Listen(ip, port)
     return ret;
 end
 
+-- tcp connect server (ip, port)
 function TCPModule:Connect(ip, port)
     local connect_ret, err = net.tcp_connect(ip, port);
     if not connect_ret then
