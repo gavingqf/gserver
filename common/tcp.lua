@@ -22,6 +22,23 @@ function TCPModule:HttpStart(ip, port, func)
     return r;
 end
 
+-- http client get
+function TCPModule:HttpGetReq(ip, port, data, func)
+    local r, data = net.http_get(ip, port, data, func);
+    if r ~= 0 then
+        Log:Crit("http get error: " .. data);
+    end
+    return data;
+end
+-- http client post
+function TCPModule::HttpPostReq(ip, port, data, func)
+    local r, data = net.http_post(ip, port, data, func);
+    if r ~= 0 then
+        Log:Crit("http get error: " .. data);
+    end
+    return data;
+end
+
 function TCPModule:Listen(ip, port)
     local ret, err = net.tcp_listen(ip, port);
     if not ret then
@@ -53,13 +70,13 @@ function TCPModule:ServerTo(server_id, msg_id, data, attach_id)
 end
 
 -- msg id.
-function TCPModule:ClientTo(client_id, msgid, data)
-    return net.client_send(client_id, msgid, data, #data);
+function TCPModule:ClientTo(session, msgid, data)
+    return net.client_send(session, msgid, data, #data);
 end
 
 -- close
-function TCPModule:Close(client_id)
-    net.client_close(client_id);
+function TCPModule:Close(session)
+    net.client_close(session);
 end
 
 return TCPModule;
