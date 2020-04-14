@@ -6,7 +6,7 @@ local LClients = {
 
 -- role is lua data.
 function LClients:Add(session, role)
-    if self[client_id] then return end
+    if self[session] then return end
 
     -- any other info.
     self[session] = role;

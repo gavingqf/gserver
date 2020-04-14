@@ -14,8 +14,8 @@ function LSessions:create(session)
     local ip, port = common.get_session_info(session);
     local LSession = { -- new session.
         session = session,
-        ip    = info.ip,
-        port  = info.port,
+        ip    = ip,
+        port  = port,
         -- Send, GetIP, GetPort, GetSession function.
         Send  = function(self, msgid, data)
             net.client_send(self.session, msgid, data, #data);
@@ -38,4 +38,4 @@ function LSessions:remove(session)
     self[session] = nil;
 end
 
-return sessions;
+return LSessions;
