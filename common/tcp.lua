@@ -9,7 +9,6 @@ local TCPModule = {
 
 }
 
--- tcp init.
 function TCPModule:Init()
     return net.net_init();
 end
@@ -69,9 +68,14 @@ function TCPModule:NodeInit(node_config, ip_config)
 end
 
 -- msg id, attach_id is inner id.
-function TCPModule:ServerTo(server_id, msg_id, data, attach_id)
+function TCPModule:ServerTo(server_id, msgid, data, attach_id)
     attach_id = attach_id or 0;
-    return net.server_send(server_id, attach_id, msg_id, data, #data);
+    return net.server_send(server_id, attach_id, msgid, data, #data);
+end
+
+function TCPModule:ServerToType(type, msgid, data, attach_id)
+    attach_id = attach_id or 0;
+    return net.server_send_type(type, attach_id, msgid, data, #data);
 end
 
 -- msg id.
