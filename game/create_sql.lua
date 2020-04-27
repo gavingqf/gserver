@@ -44,4 +44,5 @@ local mysql = mysql_init();
 for i = 1, #sql do
     create_sql(mysql, sql[i]);
 end
+mysql:Close(group);
 mysql = nil;
