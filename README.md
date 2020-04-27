@@ -18,7 +18,8 @@ All lua libraries are included in common fold.
 In a word, you can find anything here for server programming(especially for game server).
 
 All the above functions, the related interfaces or notes you can find in main.lua.  
-This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com  
+This framework can be use in server, especially for game server. Any problems please send to gavingqf@126.com 
+qq: 371516453
 
 If you want to see any examples, you can have a look at main.lua.  
 If you wanto to known the mechanism of the low c++ engine which wraps the net, mysql, timer module, you can look at  
