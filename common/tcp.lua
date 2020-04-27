@@ -1,5 +1,6 @@
 --
 -- tcp(not udp) module, server and client wrapper.
+-- include http server and http client.
 --
 local net = net;
 local Log = require "common.log_module"
@@ -14,8 +15,8 @@ function TCPModule:Init()
 end
 
 -- return true or false, error message.
-function TCPModule:HttpStart(ip, port, page, data)
-    local r, msg = net.http_start(ip, port, page, data);
+function TCPModule:HttpStart(ip, port, func)
+    local r, msg = net.http_start(ip, port, func);
     if not r then 
         Log:SCrit("http start error: " .. msg);
     end
@@ -24,6 +25,7 @@ end
 
 -- http client get:
 --                 get (ip, port, page, data)
+-- return require data.
 function TCPModule:HttpGetReq(ip, port, page, data)
     local r, data = net.http_get(ip, port, page, data);
     if false == r then
@@ -33,6 +35,7 @@ function TCPModule:HttpGetReq(ip, port, page, data)
 end
 -- http client post:
 --                 post(ip, port, page, data)
+-- return require data.
 function TCPModule:HttpPostReq(ip, port, data, func)
     local r, data = net.http_post(ip, port, data, func);
     if false == r then
@@ -59,6 +62,7 @@ function TCPModule:Connect(ip, port)
     return connect_ret;
 end
 
+-- server node init.
 function TCPModule:NodeInit(node_config, ip_config)
     local node_ret, err = net.node_init(node_config, ip_config);
     if not node_ret then
@@ -67,23 +71,30 @@ function TCPModule:NodeInit(node_config, ip_config)
     return node_ret;
 end
 
+-- send message to server.
 -- msg id, attach_id is inner id.
 function TCPModule:ServerTo(server_id, msgid, data, attach_id)
     attach_id = attach_id or 0;
     return net.server_send(server_id, attach_id, msgid, data, #data);
 end
-
+-- send to a certain type server.
 function TCPModule:ServerToType(type, msgid, data, attach_id)
     attach_id = attach_id or 0;
     return net.server_send_type(type, attach_id, msgid, data, #data);
 end
+-- send all type server.
+function TCPModule:ServerToAllType(type, msgid, data, attach_id)
+    attach_id = attach_id or 0;
+    return net.server_send_all_type(type, attach_id, msgid, data, #data);
+end
 
+-- send message to client.
 -- msg id.
 function TCPModule:ClientTo(session, msgid, data)
     return net.client_send(session, msgid, data, #data);
 end
 
--- close
+-- close client session.
 function TCPModule:Close(session)
     net.client_close(session);
 end
