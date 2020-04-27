@@ -36,13 +36,13 @@ end
 
 -- out of node.
 function xmlmodule:OutElem()
-    return self.module:OutElem();
+    return self.module:OutOfElem();
 end
 
 -- get node attrib.
 -- return node value as string.
 function xmlmodule:GetAttrib(node)
-    return self.module:FindElem(node);
+    return self.module:GetAttrib(node);
 end
 
 -- add elem 
