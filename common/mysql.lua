@@ -174,5 +174,10 @@ function MysqlModule:Escape(data)
     return db.mysql_escape(self.m_handle, data);
 end
 
+-- mysql close
+function MysqlModule:Close(group)
+    db.mysql_close(group);
+end
+
 return MysqlModule;
 
