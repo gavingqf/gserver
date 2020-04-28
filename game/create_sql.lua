@@ -1,4 +1,6 @@
 local MYSQL = require "common.mysql"
+local log = require "common.log_module"
+
 
 -- enum series of sql you want to execute.
 local sql= { 
@@ -27,22 +29,36 @@ local sql= {
     -- other sql statement.
 };
 
+-- connect mysql group handle.
+local group = 100;
+
 -- create mysql and connect it.
 local function mysql_init()
     local mysql = MYSQL:new();
-    mysql:Init(1, 1);
-    mysql:Connect("127.0.0.1", 3306, "root", "123456", "test", "utf8");
-    return mysql;
+    mysql:Init(group, 1);
+    local r = mysql:Connect("127.0.0.1", 3306, "root", "123456", "test", "utf8");
+    if false == r then
+        log:SCrit("connect mysql error: " .. err or "");
+        mysql = nil;
+        return nil;
+    else
+        return mysql;
+    end
 end
 
+-- create sql now.
 local function create_sql(mysql, sql)
     mysql:Sync_update(sql, 0);
 end
 
--- create table.
+-- == create table. == --
 local mysql = mysql_init();
+if not mysql then return end
+
 for i = 1, #sql do
     create_sql(mysql, sql[i]);
 end
+
+-- close it.
 mysql:Close(group);
 mysql = nil;
