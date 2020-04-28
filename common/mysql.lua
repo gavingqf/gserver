@@ -119,7 +119,6 @@ function MysqlModule:ConnectTable(connect_info)
     if not r then
         Log:SCrit(BuildString("connect mysql return err: ", err));
     end
-
     return r;
 end
 
@@ -174,7 +173,7 @@ function MysqlModule:Escape(data)
     return db.mysql_escape(self.m_handle, data);
 end
 
--- mysql close
+-- mysql close group connection.
 function MysqlModule:Close(group)
     db.mysql_close(group);
 end
