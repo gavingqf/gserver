@@ -90,6 +90,7 @@ end
 
 -- send message to client.
 -- msg id.
+-- return send size, msg.
 function TCPModule:ClientTo(session, msgid, data)
     return net.client_send(session, msgid, data, #data);
 end

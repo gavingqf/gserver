@@ -12,6 +12,20 @@ local table_concat  = table.concat;
 local os            = os;
 -- c export to lua space.
 local common        = common;
+local pb            = require "common/pb_module"
+local log           = require "common/log_module"
+
+-- mode: {colleage, step}
+function gc_check(mode)
+	collectgarbage(mode);
+end
+
+-- set and load proto file
+function load_fold_proto(fold, proto)
+	pb:Load_path(fold);
+	pb:Load_file(proto);
+	return true;
+end
 
 -- global variable check.
 function global_variable_check()
@@ -19,17 +33,17 @@ function global_variable_check()
         __index = function(_, key)
             local info = debug.getinfo(2, "S")
             if info and info.what ~= "main" and info.what ~= "C" then
-                print("visit a undefined variable: " .. key);
+                log:Crit("visit a undefined variable: " .. key);
             end
             return rawget(_G, key);
-        end,
+		end,
         __newindex = function(_, key, value)
             local info = debug.getinfo(2, "S")
             if info and info.what ~= "main" and info.what ~= "C" then
-                print("asign a undefined variable:" .. key);
+                log:Crit("asign a undefined variable:" .. key);
             end
             return rawset(_G, key, value);
-        end
+		end
     }
     setmetatable(_G, mt);
 end
@@ -109,7 +123,7 @@ function trycall(func, ...)
     return xpcall(function() func(unpack(args)) end, __TRACKBACK__);
 end
 
---install our crazy loader! MUST BE HERE FOR NACL
+--install our crazy loader!
 function InstallSpecialLoader()
     local loadfn = function(modulename)
         local errmsg = "";
@@ -117,22 +131,25 @@ function InstallSpecialLoader()
         for path in string.gmatch(package.path, "([^;]+)") do
             local filename = string.gsub(path, "%?", modulepath);
             filename = string.gsub(filename, "\\", "/");
-            local result = kleiloadlua(filename);
+            local result = loadfile(filename);
             if result then
                return result;
             end
-            errmsg = errmsg .. "\n\tno file '" .. filename .. "' (checked with custom loader)";
+            errmsg = errmsg .. "\n\t no file '" .. filename .. "' (checked with custom loader)";
         end
         return errmsg;   
-    end
-    table_insert(package.loaders, 1, loadfn);
+	end
+	
+	-- lua5.1 loaders, but lua5.3 is searchers.
+	local loaders = package.loaders or package.searchers
+    table_insert(loaders, 1, loadfn);
 end
 
 -- global rand method.
 function GetRand(min, max)
-	local rand = common.rand;
-	if not rand then rand = math.random end
-
+	max = max or min;
+	local rand = common.rand or math.random;
+	
 	local real_min, real_max = min, max;
 	if real_min > real_max then
 		real_min, real_max = real_max, real_min;
@@ -175,12 +192,12 @@ function GetNow()
 	return common.now();
 end
 
--- md5
+-- md5 string
 function md5(content)
 	return common.md5(content, #content);
 end
 
--- build client head with size.
+-- build client head with size, return head string.
 function build_client_head(size)
 	size = size or 1;
 	return common.build_client_head(size);
