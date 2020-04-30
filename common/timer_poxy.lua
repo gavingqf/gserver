@@ -1,12 +1,15 @@
---
--- timer poxy module.
---
+-- [[
+-- timer poxy module. just wraper timer info.
+-- ]]
+
 local timer = require "common.timer"
+require "common.class"
 
 
-local timer_poxy = {
-    timer_list = {}, -- timer id list.
-};
+ timer_poxy = class();
+ function timer_poxy:Ctor()
+    self.timer_list = {};
+ end
 
 function timer_poxy:ClearTimer()
     if not self.timer_list then return end
@@ -15,12 +18,6 @@ function timer_poxy:ClearTimer()
         timer:KillTimer(self.timer_list[i]);
     end
     self.timer_list = nil;
-end
-
-function timer_poxy:new(o)
-    o = o or {};
-    setmetatable(o, { __index = self, __gc = function(o) o:ClearTimer(); end });
-    return o;
 end
 
 function timer_poxy:add(id)
@@ -44,7 +41,9 @@ function timer_poxy:GetLeftTime(id)
 end
 
 function timer_poxy:KillTimer(id)
-    return timer:KillTimer(id);
+    local r = timer:KillTimer(id);
+    self:RemoveTimer(id);
+    return r;
 end
 
 function timer_poxy:HasTimer(id)
@@ -57,8 +56,9 @@ function timer_poxy:HasTimer(id)
     end
     if false == find then
         return false;
+    else
+        return timer:HasTimer(id);
     end
-    return timer:HasTimer(id);
 end
 
 function timer_poxy:RemoveTimer(id)
