@@ -30,35 +30,33 @@ function class(base, _ctor, gc)
 
 	-- define base class and construct function.
 	if not _ctor and type(base) == "function" then
-		local ctor = base
-		child.Ctor = ctor
+		local ctor = base;
+		child.Ctor = ctor;
 		child.__base__ = nil
 	elseif not base and type(_ctor) == "function" then
-		child.Ctor = _ctor
+		child.Ctor = _ctor;
 		child.__base__ = nil
     elseif _ctor and type(_ctor) == "function" then
-        child.Ctor = _ctor
-		child.__base__ = base
+        child.Ctor = _ctor;
+		child.__base__ = base;
 	end
 
 	if not gc then gc = false end
 
-	-- the onlye new function which will be called as follows.
+	-- the onlye new function.
 	local function _new(...)
-		local object = {}
+		local o = {}; -- return object.
 		local function create(c, ...)
-			-- try call base ctor
 			if c.__base__ then
-				create(c.__base__, ...)
+				create(c.__base__, ...);
 			end
-			-- call ctor function if have
 			if c.Ctor then
-				c.Ctor(object, ...)
+				c.Ctor(o, ...); -- here is object, not c(c is class, o is object.).
 			end
 		end
         
 		local function release(Class, Object)	
-			local Release
+			local Release;
              Release = function (c)
                  if c.Dtor then
                      c.Dtor(Object)
@@ -68,31 +66,32 @@ function class(base, _ctor, gc)
                     Release(c.__base__)
 				end
 			end
-			Release(Class)
+			Release(Class);
         end
 
 		 -- only for 5.3 version.
 		 -- directly set __gc field of the metatable for destructor of this object.
 		 if gc then
-			 setmetatable(object, {
+			setmetatable(o, {
 			    __index = _class[child],
-			    __gc    = function (o) release(child, o) end
-		    })
+			    __gc    = function (ins) release(child, ins) end
+		    });
 		 else
-			setmetatable(object, {__index = _class[child]})
+			setmetatable(o, {__index = _class[child]});
 	     end
 
-		create(child, ...)
-		return object
+		-- create from child.
+		create(child, ...);
+		return o;
 	end
 
 	-- create instance, call all base Ctor function.
 	child.new = function(...)
-		return _new(...)	
+		return _new(...);
 	end
 
 	-- Declare a table to save intance member.
-	local vtbl = {}
+	local vtbl = {};
 	vtbl.is_a = function(self, klass)
 		local m = child;
 		while m do 
@@ -101,14 +100,14 @@ function class(base, _ctor, gc)
 		end
 		return false;
     end
-	_class[child] = vtbl
+	_class[child] = vtbl;
 
 	-- support class() to create instance: __call
 	-- set value to vtbl table.
 	setmetatable(child, {
 		__newindex = function(t, k, v) rawset(vtbl, k, v) end,
 		__call     = function(class_tbl, ...) return _new(...) end 
-	})
+	});
 
 	-- find from base table if can not find a certain field(derivation).
 	if child.__base__ then
@@ -118,14 +117,15 @@ function class(base, _ctor, gc)
 			if k == "super" then -- if super then return __base__ data, this can simulate c++, can call base related method.
 				return _class[child.__base__]
 			else
-				local value = _class[child.__base__][k]
-				vtbl[k] = value
-			    return value
+				local value = _class[child.__base__][k];
+				vtbl[k] = value;
+			    return value;
 			end
 		end
-		setmetatable(vtbl, {__index = _index})
+		setmetatable(vtbl, {__index = _index});
 	end
 
-	return child
+	-- return table.
+	return child;
 end
 --------------------- end of class define --------------------
