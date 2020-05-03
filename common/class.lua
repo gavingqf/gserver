@@ -59,11 +59,11 @@ function class(base, _ctor, gc)
 			local Release;
              Release = function (c)
                  if c.Dtor then
-                     c.Dtor(Object)
+                     c.Dtor(Object);
                 end
 
                 if c.__base__ then
-                    Release(c.__base__)
+                    Release(c.__base__);
 				end
 			end
 			Release(Class);
@@ -114,7 +114,7 @@ function class(base, _ctor, gc)
 		local function _index(t, k)
 			if not k then return nil end
 
-			if k == "super" then -- if super then return __base__ data, this can simulate c++, can call base related method.
+			if k == "super" then -- if super then return __base__ data;
 				return _class[child.__base__]
 			else
 				local value = _class[child.__base__][k];
