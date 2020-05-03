@@ -60,7 +60,13 @@ local MysqlModule = {
 -- for another connection with mysql.
 function MysqlModule:new(o)
     o = o or {};
-    setmetatable(o, {__index = self});
+    setmetatable(o, { __index = function(t, k) 
+        local v = self[k];
+        if v then
+            o[k] = v;
+        end
+        return v;
+    end} );
     return o;
 end
 
