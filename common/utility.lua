@@ -281,3 +281,16 @@ function math.clamp(num, min, max)
 	return num <= min and min or (num >= max and max or num)
 end
 
+function get_table_size(t)
+	if type(t) == 'table' then
+	    local c = 0;
+	    for k, v in pairs(t) do
+		    c = c + 1;
+	    end
+	     return c;
+    else
+	    return #t;
+    end
+end
+
+

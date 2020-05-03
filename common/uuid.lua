@@ -3,7 +3,7 @@
 --
 local uuid = {
     m_high_id = 0,
-    m_low_id  = 0,
+    m_low_id  = 1,
 }
 
 function uuid:SetHighId(id)

@@ -29,7 +29,8 @@ function TimerModule:AddTimer(delay, circle, func, para)
     end
 
     if delay < 0 then
-        Log:Crit("delay time error")
+        Log:Crit("delay time error");
+        delay = 0;
     end
 
     if not func then

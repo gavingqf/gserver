@@ -14,14 +14,14 @@ local _class = {}
 		self.super:Func();
 	end
 
-	cleate object:
+	create object:
 	local d = Derived() or 
 	local d = Derived.new()
 	d:Func()
 --]]
 
 ------------------------ start define class function --------------------
--- base is base class, and _ctor is construct function.
+-- base is base class, and _ctor is construct function, gc is gc function.
 function class(base, _ctor, gc)
 	local child = {
 		Ctor     = false,

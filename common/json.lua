@@ -62,8 +62,8 @@ local encodeString
 local isArray
 local isEncodable
 
+-- !!! === this is can not used in serialization for saving data === !!!
 -- full_encode interface, just include function type.
--- this is can not used in serialization.
 function json.full_encode (v, filter)
 	-- Handle nil values
 	if v==nil then
@@ -176,6 +176,7 @@ function json.encode (v)
 				end
 			end
 		end
+		
 		if bArray then
 			return '[' .. table.concat(rval,',') ..']'
 		else
@@ -183,7 +184,7 @@ function json.encode (v)
 		end
 	end
 
-	-- Handle null values
+	-- Handle null values or function type.
 	if vtype=='function' and v==json.null then
 		return 'null'
 	end

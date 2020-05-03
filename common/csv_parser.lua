@@ -1,5 +1,6 @@
 --csv parser 
 local string = string
+local table = table
 
 -- trim left space  
 local function trim_left(s)  
@@ -18,23 +19,19 @@ local function parseline(line)
 
 	-- keep the last field as a complete one
 	local s = line .. ",";
-	while (s ~= "") do  
-
+	while (s ~= "") do 
 		local v = "";  
 		local tl = true;  
 		local tr = true;  
 
 		while (s ~= "" and nil == string.find(s, "^,")) do  
-
 			if (string.find(s, "^\"")) then  
-
 				local _,_,vx,vz = string.find(s, "^\"(.-)\"(.*)");  
 
 				if (nil == vx) then  
 					return nil;  
 				end  
 
-				-- ���ſ�ͷ�Ĳ�ȥ�հ�  
 				if (v == "") then  
 					tl = false;  
 				end  
@@ -43,9 +40,7 @@ local function parseline(line)
 				s = vz;  
 
 				while (string.find(s, "^\"")) do  
-
 					local _,_,vx,vz = string.find(s, "^\"(.-)\"(.*)");  
-
 					if(vx == nil) then  
 						return nil;  
 					end  
@@ -65,8 +60,7 @@ local function parseline(line)
 					v = v .. s;  
 					s = "";  
 				end
-				tr = false;  
-
+				tr = false; 
 			end  
 		end  
 
@@ -77,8 +71,7 @@ local function parseline(line)
 
 		if (string.find(s, "^,")) then  
 			s = string.gsub(s, "^,", "");  
-		end  
-
+		end
 	end  
 
 	-- if all is "", then return nil, to remove it
@@ -95,7 +88,6 @@ end
 
 -- get all row content 
 local function getRowContent(file)  
-
 	local content;  
 
 	local check = false;  
@@ -112,12 +104,10 @@ local function getRowContent(file)
 
 		local i = 1;
 		while true do
-
 			local index = string.find(t, "\"", i); 
 			if not index then break end  
 			i = index + 1;
 			count = count + 1;
-
 		end  
 
 		if count % 2 == 0 then check = true break end 
@@ -130,7 +120,6 @@ end
 
 -- load file 
 function LoadCsv(fileName) 
-
 	local ret = {};  
 
 	local file = io.open(fileName, "r")  
@@ -141,12 +130,9 @@ function LoadCsv(fileName)
 
 	local content = {};  
 	while true do  
-
 		local line = getRowContent(file);
-
 		if not line then break end 
 		table.insert(content, line);
-
 	end  
 
 	for k,v in pairs(content) do
@@ -158,8 +144,7 @@ function LoadCsv(fileName)
 
 	file:close();  
 
-	return ret; 
-
+	return ret;
 end
 
 

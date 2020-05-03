@@ -24,6 +24,7 @@ function xmlmodule:Load(filename)
     return self.module:Load(filename);
 end
 
+-- find element. exist return true, else false.
 function xmlmodule:FindElem(node)
     return self.module:FindElem(node);
 end
@@ -53,6 +54,11 @@ end
 -- set node and value in certain node.
 function xmlmodule:SetAttrib(node, value)
     return xmlmodule:SetAttrib(node, value);
+end
+
+-- find and into node.
+function xmlmodule:EnterElem(node)
+    return self:FindElem(node) and self:IntoElem(node);
 end
 
 if not xmlmodule.module then

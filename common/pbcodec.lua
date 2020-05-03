@@ -1,6 +1,10 @@
 local _M = {}
 
--- _M.pb = require("pb")
+--[[
+  pb module wrapper.
+]]
+
+local pb = pb;
 _M.pb = pb;
 _M.pb.option("enum_as_value")
 

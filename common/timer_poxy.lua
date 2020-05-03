@@ -11,6 +11,7 @@ require "common.class"
     self.timer_list = {};
  end
 
+ -- clear all timer.
 function timer_poxy:ClearTimer()
     if not self.timer_list then return end
 
@@ -20,32 +21,46 @@ function timer_poxy:ClearTimer()
     self.timer_list = nil;
 end
 
+-- add timer id.
 function timer_poxy:add(id)
     self.timer_list[#self.timer_list + 1] = id;
 end
 
+-- add once timer.
 function timer_poxy:AddOnceTimer(delay, func, para)
     local id = timer:AddOnceTimer(delay, func, para);
     self:add(id);
     return id;
 end
 
+-- add repeat timer.
 function timer_poxy:AddRepeatTimer(delay, func, para)
     local id = timer:AddRepeatTimer(delay, func, para);
     self:add(id);
     return id;
 end
 
+-- get left time of timer.
 function timer_poxy:GetLeftTime(id)
-    return timer:GetLeftTime(id);
+    if not self:HasTimer(id) then
+        return -1;
+    else
+        return timer:GetLeftTime(id);
+    end
 end
 
+-- kill timer.
 function timer_poxy:KillTimer(id)
-    local r = timer:KillTimer(id);
-    self:RemoveTimer(id);
-    return r;
+    if self:HasTimer(id) then
+        local r = timer:KillTimer(id);
+        self:RemoveTimer(id);
+        return r;
+    else
+        return false;
+    end
 end
 
+-- has timer
 function timer_poxy:HasTimer(id)
     local find = false;
     for i = 1, #self.timer_list do
@@ -61,6 +76,7 @@ function timer_poxy:HasTimer(id)
     end
 end
 
+-- remove timer.
 function timer_poxy:RemoveTimer(id)
     self.timer_list[id] = nil;
 end
