@@ -2,7 +2,7 @@
 -- JSON4Lua: JSON encoding / decoding support for the Lua language.
 -- json Module.
 -- Author: Craig Mason-Jones
--- Homepage: http://github./com/craigmjjson4lua/
+-- Homepage: http://github.com/craigmj/json4lua/
 -- Version: 1.0.0
 -- This module is released under the MIT License (MIT).
 -- Please see LICENCE.txt for details.
@@ -61,6 +61,79 @@ local decode_scanWhitespace
 local encodeString
 local isArray
 local isEncodable
+
+-- !!! === this is can not used in serialization for saving data === !!!
+-- full_encode interface, just include function type.
+function json.full_encode (v, filter)
+	-- Handle nil values
+	if v==nil then
+		return "null"
+	end
+
+	local vtype = type(v)
+
+	-- Handle strings
+	if vtype=='string' then    
+		return '"' .. json_private.encodeString(v) .. '"'	    -- Need to handle encoding in string
+	end
+
+	-- Handle booleans
+	if vtype=='number' or vtype=='boolean' then
+		return tostring(v)
+	end
+
+	-- exclude func.
+	local function exclude(v)
+		if not filter then
+			return false
+		end
+		
+		for i = 1, #filter do
+			if v == filter[i] then
+				return true
+			end
+		end
+		return false
+	end
+
+	-- Handle tables
+	if vtype=='table' then
+		local rval = {}
+		-- Consider arrays separately
+		local bArray, maxCount = isArray(v)
+		if bArray then
+			for i = 1,maxCount do
+				table.insert(rval, json.full_encode(v[i], filter))
+			end
+		else	-- An object, not an array
+			for i,j in pairs(v) do
+				-- function type encode.
+				if type(j) == 'function' then
+					if not exclude(i) then
+					    table.insert(rval, '"' .. json_private.encodeString(i) .. '":' .. '\'function\'')
+					end
+				end
+			    
+				-- encode other kind of element.
+				if isEncodable(i) and isEncodable(j) then
+					table.insert(rval, '"' .. json_private.encodeString(i) .. '":' .. json.full_encode(j, filter))
+				end
+			end
+		end
+		if bArray then
+			return '[' .. table.concat(rval,',') ..']'
+		else
+			return '{' .. table.concat(rval,',') .. '}'
+		end
+	end
+
+	-- Handle null values
+	if vtype=='function' and v==json.null then
+		return 'null'
+	end
+
+	assert(false,'encode attempt to encode unsupported type ' .. vtype .. ':' .. tostring(v))
+end
 
 -----------------------------------------------------------------------------
 -- PUBLIC FUNCTIONS
