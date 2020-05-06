@@ -8,13 +8,15 @@ local xmlmodule = {
 };
 
 function xmlmodule:Init()
-    self.module = xmlreader.new();
-    return self.module ~= nil;
+    self.module = true;
+    return true;
 end
 
 -- create new one.
 function xmlmodule:new()
     local r = {};
+    r.module = xmlreader.new();
+    r.release = function(self) self.module = nil end;
     setmetatable(r, {__index = self});
     return r;
 end
@@ -68,7 +70,8 @@ return xmlmodule;
 
 -- usage as following:
 --[[
-    local xml = require "common.xml";
+    local xmlmodule = require "common.xml";
+    local xml = xmlmodule:new();
     if xml:Load(file) == false 
         printf("load " .. file .. " error");
         return ;

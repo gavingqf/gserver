@@ -57,9 +57,9 @@ end
 function TimerModule:KillTimer(id)
     if not id then
         Log:Crit("timer id is nil");
-        return ;
+        return false;
     end
-    timer.kill_timer(id);
+    return timer.kill_timer(id);
 end
 
 -- get left time of timer id.

@@ -1,7 +1,7 @@
 local common = common;
-local tcp = require "common.tcp"
+local tcp    = require "common.tcp"
 
--- sessions manager.
+-- client sessions manager.
 local LSessions = {
 
 }
@@ -12,7 +12,7 @@ function LSessions:create(session)
 
     -- get session info.
     local ip, port = common.get_session_info(session);
-    local LSession = { -- new session.
+    local sess = { -- new session.
         session   = session,
         ip        = ip,
         port      = port,
@@ -25,8 +25,8 @@ function LSessions:create(session)
         GetPort   = function(self) return self.port end,
         GetSession= function(self) return self.session end,
     };
-    self[session] = LSession;
-    return LSession;
+    self[session] = sess;
+    return sess;
 end
 
 -- get session.

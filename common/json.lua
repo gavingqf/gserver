@@ -2,7 +2,7 @@
 -- JSON4Lua: JSON encoding / decoding support for the Lua language.
 -- json Module.
 -- Author: Craig Mason-Jones
--- Homepage: http://github.com/craigmj/json4lua/
+-- Homepage: http://github./com/craigmjjson4lua/
 -- Version: 1.0.0
 -- This module is released under the MIT License (MIT).
 -- Please see LICENCE.txt for details.
@@ -62,79 +62,6 @@ local encodeString
 local isArray
 local isEncodable
 
--- !!! === this is can not used in serialization for saving data === !!!
--- full_encode interface, just include function type.
-function json.full_encode (v, filter)
-	-- Handle nil values
-	if v==nil then
-		return "null"
-	end
-
-	local vtype = type(v)
-
-	-- Handle strings
-	if vtype=='string' then    
-		return '"' .. json_private.encodeString(v) .. '"'	    -- Need to handle encoding in string
-	end
-
-	-- Handle booleans
-	if vtype=='number' or vtype=='boolean' then
-		return tostring(v)
-	end
-
-	-- exclude func.
-	local function exclude(v)
-		if not filter then
-			return false
-		end
-		
-		for i = 1, #filter do
-			if v == filter[i] then
-				return true
-			end
-		end
-		return false
-	end
-
-	-- Handle tables
-	if vtype=='table' then
-		local rval = {}
-		-- Consider arrays separately
-		local bArray, maxCount = isArray(v)
-		if bArray then
-			for i = 1,maxCount do
-				table.insert(rval, json.full_encode(v[i], filter))
-			end
-		else	-- An object, not an array
-			for i,j in pairs(v) do
-				-- function type encode.
-				if type(j) == 'function' then
-					if not exclude(i) then
-					    table.insert(rval, '"' .. json_private.encodeString(i) .. '":' .. '\'function\'')
-					end
-				end
-			    
-				-- encode other kind of element.
-				if isEncodable(i) and isEncodable(j) then
-					table.insert(rval, '"' .. json_private.encodeString(i) .. '":' .. json.full_encode(j, filter))
-				end
-			end
-		end
-		if bArray then
-			return '[' .. table.concat(rval,',') ..']'
-		else
-			return '{' .. table.concat(rval,',') .. '}'
-		end
-	end
-
-	-- Handle null values
-	if vtype=='function' and v==json.null then
-		return 'null'
-	end
-
-	assert(false,'encode attempt to encode unsupported type ' .. vtype .. ':' .. tostring(v))
-end
-
 -----------------------------------------------------------------------------
 -- PUBLIC FUNCTIONS
 -----------------------------------------------------------------------------
@@ -170,13 +97,11 @@ function json.encode (v)
 			end
 		else	-- An object, not an array
 			for i,j in pairs(v) do
-				-- encode other kind of element.
 				if isEncodable(i) and isEncodable(j) then
 					table.insert(rval, '"' .. json_private.encodeString(i) .. '":' .. json.encode(j))
 				end
 			end
 		end
-		
 		if bArray then
 			return '[' .. table.concat(rval,',') ..']'
 		else
@@ -184,7 +109,7 @@ function json.encode (v)
 		end
 	end
 
-	-- Handle null values or function type.
+	-- Handle null values
 	if vtype=='function' and v==json.null then
 		return 'null'
 	end
@@ -472,33 +397,23 @@ end
 function isArray(t)
 	-- Next we count all the elements, ensuring that any non-indexed elements are not-encodable 
 	-- (with the possible exception of 'n')
-	if (t == json.EMPTY_ARRAY) then
-		return true, 0 
-	end
-	if (t == json.EMPTY_OBJECT) then
-		return false
-	end
+	if (t == json.EMPTY_ARRAY) then return true, 0 end
+	if (t == json.EMPTY_OBJECT) then return false end
 
 	local maxIndex = 0
 	for k,v in pairs(t) do
 		if (type(k)=='number' and math.floor(k)==k and 1<=k) then	-- k,v is an indexed pair
-			if (not isEncodable(v)) then 
-				return false 
-			end	-- All array elements must be encodable
+			if (not isEncodable(v)) then return false end	-- All array elements must be encodable
 			maxIndex = math.max(maxIndex,k)
 		else
 			if (k=='n') then
-				if v ~= (t.n or #t) then 
-					return false 
-				end  -- False if n does not hold the number of elements
+				if v ~= (t.n or #t) then return false end  -- False if n does not hold the number of elements
 			else -- Else of (k=='n')
-				if isEncodable(v) then 
-					return false 
-				end
+				if isEncodable(v) then return false end
 			end  -- End of (k~='n')
 		end -- End of k,v not an indexed pair
 	end  -- End of loop across all pairs
-	return false, maxIndex
+	return true, maxIndex
 end
 
 --- Determines whether the given Lua object / table / variable can be JSON encoded. The only

@@ -1,5 +1,5 @@
 -- [[
--- timer poxy module. just wraper timer info.
+-- timer poxy module. just wraper timer info for a class.
 -- ]]
 
 local timer = require "common.timer"
@@ -18,7 +18,7 @@ function timer_poxy:ClearTimer()
     for i = 1, #self.timer_list do
         timer:KillTimer(self.timer_list[i]);
     end
-    self.timer_list = nil;
+    self.timer_list = {};
 end
 
 -- add timer id.
@@ -40,7 +40,7 @@ function timer_poxy:AddRepeatTimer(delay, func, para)
     return id;
 end
 
--- get left time of timer.
+-- get left time of timer.if there is no id, then return -1.
 function timer_poxy:GetLeftTime(id)
     if not self:HasTimer(id) then
         return -1;
@@ -49,11 +49,13 @@ function timer_poxy:GetLeftTime(id)
     end
 end
 
--- kill timer.
+-- kill timer(check timer id).
 function timer_poxy:KillTimer(id)
     if self:HasTimer(id) then
         local r = timer:KillTimer(id);
-        self:RemoveTimer(id);
+        if r then
+            self:RemoveTimer(id);
+        end
         return r;
     else
         return false;

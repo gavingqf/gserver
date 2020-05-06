@@ -78,13 +78,11 @@ function Reload(szLuaFile)
 	if not szLuaFile then
 		return false;
 	end
-
+	
 	-- replace / and \ to .
 	string_gsub(szLuaFile, "//", ".");
 	string_gsub(szLuaFile, "\\", ".");
-
-	--_G[szLuaFile] = nil;
-
+    
 	package.loaded[szLuaFile] = nil;
 	return require(szLuaFile);
 end
@@ -250,6 +248,7 @@ function GetProbIndexPro(prob_items, index, prob_sum)
 	return GetVecProbIndex(vec_sum, prob_sum);
 end
 
+-- deep copy object.
 function DeepCopy(object)
     local SearchTable = {}
 
@@ -264,7 +263,6 @@ function DeepCopy(object)
 	  end	  
         return setmetatable(NewTable, getmetatable(object))
     end
-
     return Func(object)
 end
 

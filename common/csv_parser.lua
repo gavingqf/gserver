@@ -123,7 +123,7 @@ function LoadCsv(fileName)
 	local ret = {};  
 
 	local file = io.open(fileName, "r")  
-	assert(file);  
+	assert(file, "open " .. fileName .. " error");  
 	if not file then
 		return nil;
 	end

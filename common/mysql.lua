@@ -60,13 +60,9 @@ local MysqlModule = {
 -- for another connection with mysql.
 function MysqlModule:new(o)
     o = o or {};
-    setmetatable(o, { __index = function(t, k) 
-        local v = self[k];
-        if v then
-            o[k] = v;
-        end
-        return v;
-    end} );
+    o.m_handle = 0;
+    o.m_count  = 0;
+    setmetatable(o, { __index = self });
     return o;
 end
 
@@ -114,7 +110,6 @@ function MysqlModule:ConnectTable(connect_info)
     end
 
     local charset = connect_info[6];
-    -- default charset is utf8
     charset = charset or "utf8";
 
     local r, err = db.mysql_connect(self.m_handle,

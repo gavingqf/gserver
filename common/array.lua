@@ -15,7 +15,7 @@ function LArray:clear()
         self.m_array[i] = nil;
     end
     self.m_array = nil;
-
+    -- reset m_array.
     self.m_array = {};
 end
 

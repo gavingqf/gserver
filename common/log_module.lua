@@ -46,4 +46,8 @@ function LogModule:SWarn(...)
     log.swarn(c);
 end
 
+--[[
+    usage:
+         log:Crit("can not find ", role:GetObjId());
+]]
 return LogModule;
