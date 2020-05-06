@@ -132,13 +132,13 @@ function MysqlModule:ConnectString(ip, port, user, pass, db, charset)
     return self:Connect({ip, port, user, pass, db, charset});
 end
 
--- return return value, error string
+-- return return value(as MysqlExecutevariable), error string
 function MysqlModule:Sync_update(sql, index)
     if not index then index = GetRand(0, self.m_count - 1) end
     return db.mysql_sync_query_no_res(self.m_handle, index, sql);
 end
 
--- return ret(integer), error and results which is a table or nil
+-- return ret(integer, as MysqlExecutevariable), error and results which is a table or nil
 -- table format: : {{},...}
 function MysqlModule:Sync_query(sql, index)
     if not index then index = GetRand(0, self.m_count - 1) end
