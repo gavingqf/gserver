@@ -56,21 +56,25 @@ local MysqlModule = {
     m_count  = 1,   -- connect num.
 }
 
+-- default constructor.
+function MysqlModule:Ctor(handle, count)
+    self.m_handle = handle;
+    self.m_count  = count;
+end
+
 -- you can create a new instance.
 -- for another connection with mysql.
 function MysqlModule:new(o)
     o = o or {};
-    o.m_handle = 0;
-    o.m_count  = 0;
     setmetatable(o, { __index = self });
+    o:Ctor(1, 1);
     return o;
 end
 
 
 -- handle decide connection.
 function MysqlModule:Init(handle, count)
-    self.m_handle = handle or 1;
-    self.m_count  = count or 1;
+    self:Ctor(handle, count);
     if self.m_count <= 0 then
         return false;
     end
