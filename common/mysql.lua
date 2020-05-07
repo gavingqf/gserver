@@ -67,7 +67,7 @@ end
 function MysqlModule:new(o)
     o = o or {};
     setmetatable(o, { __index = self });
-    o:Ctor(1, 1);
+    o:Ctor(1, 1); -- must call Ctor.
     return o;
 end
 
