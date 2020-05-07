@@ -181,9 +181,11 @@ end
 
 -- mysql close group connection.
 function MysqlModule:Close()
-    db.mysql_close(self.m_handle);
-    self.m_handle = nil;
-    self.m_count = nil;
+    if self.m_handle then
+       db.mysql_close(self.m_handle);
+       self.m_handle = nil;
+       self.m_count = nil;
+    end
 end
 
 return MysqlModule;
