@@ -84,6 +84,7 @@ end
 -- wait to execute all sql.
 -- this interfacel will block until all sql finished.
 function MysqlModule:Wait()
+    if not self.m_handle then return end
     db.mysql_wait(self.m_count, self.m_handle);
 end
 
@@ -179,8 +180,10 @@ function MysqlModule:Escape(data)
 end
 
 -- mysql close group connection.
-function MysqlModule:Close(group)
-    db.mysql_close(group);
+function MysqlModule:Close()
+    db.mysql_close(self.m_handle);
+    self.m_handle = nil;
+    self.m_count = nil;
 end
 
 return MysqlModule;
