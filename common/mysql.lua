@@ -53,7 +53,7 @@ MysqlExecutevariable = {
 -- mysql connect module
 local MysqlModule = {
     m_handle = nil, -- connect handle.
-    m_count  = 1,   -- connect num.
+    m_count  = 1,   -- connect num(for m_count threads.)
 }
 
 -- default constructor.
@@ -62,8 +62,7 @@ function MysqlModule:Ctor(handle, count)
     self.m_count  = count;
 end
 
--- you can create a new instance.
--- for another connection with mysql.
+-- you can create a new instance which inherit from this class.
 function MysqlModule:new(o)
     o = o or {};
     setmetatable(o, { __index = self });
@@ -84,13 +83,13 @@ end
 -- wait to execute all sql.
 -- this interfacel will block until all sql finished.
 function MysqlModule:Wait()
+    -- if there is no handle connection, then just return.
     if not self.m_handle then return end
     db.mysql_wait(self.m_count, self.m_handle);
 end
 
 --[[
-    { ip, port, user, pass, database, charset },
-    default charset is utf8
+    { ip, port, user, pass, database, charset }, default charset is utf8
 --]]
 -- return true or false.
 function MysqlModule:Connect(...)
@@ -107,7 +106,6 @@ function MysqlModule:Connect(...)
         return self:ConnectString(...);
     end
 end
-
 function MysqlModule:ConnectTable(connect_info)
     if #connect_info <= 5 then
         Log:Crit("connect para is so less");
@@ -127,7 +125,6 @@ function MysqlModule:ConnectTable(connect_info)
     end
     return r;
 end
-
 -- connect detail
 function MysqlModule:ConnectString(ip, port, user, pass, db, charset)
     return self:Connect({ip, port, user, pass, db, charset});
@@ -146,6 +143,7 @@ function MysqlModule:Sync_query(sql, index)
     local ret, error, res = db.mysql_sync_query_with_res(self.m_handle, index, sql);
     return ret, error, res;
 end
+
 
 -- func: function(ret, err) end
 -- ret is bool, err is error string.
