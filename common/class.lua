@@ -55,10 +55,10 @@ function class(base, _ctor, gc)
 		end
 		
 		-- Class and its Object.
-		local function release(Class, Object)	
+		local function release(Class, Object)
 			local Release;
-            Release = function (C)
-                 if C.Dtor then
+			Release = function (C)
+                if C.Dtor then
                      C.Dtor(Object);
                 end
 
@@ -69,16 +69,11 @@ function class(base, _ctor, gc)
 			Release(Class);
         end
 
-		 -- only for 5.3 version.
-		 -- directly set __gc field of the metatable for destructor of this object.
-		 if gc then
-			setmetatable(o, {
-			    __index = _class[c], --[[note: _class[c] = vtbl.]]
-			    __gc    = function (ins) release(c, ins) end
-		    });
-		 else
-			setmetatable(o, {__index = _class[c]});
-	     end
+		-- set __index and __gc memta function.
+		setmetatable(o, {
+			__index = _class[c], --[[note: _class[c] = vtbl]]
+			__gc    = function (ins) release(_class[c], ins) end
+		});
 
 		-- create from c.
 		create(c, ...);

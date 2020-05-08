@@ -4,11 +4,20 @@
 
 local timer = require "common.timer"
 require "common.class"
-
+local log = require "common.log_module"
 
  timer_poxy = class();
  function timer_poxy:Ctor()
     self.timer_list = {};
+ end
+
+ function timer_poxy:Dtor()
+    self:ClearTimer();
+    log:Crit("timer proxy is gc.");
+ end
+
+ function timer_poxy:GetName()
+    return "timer_poxy";
  end
 
  -- clear all timer.
