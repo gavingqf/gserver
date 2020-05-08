@@ -14,6 +14,7 @@ All lua libraries are included in common fold.
   7, Astar path finding for 2d game.  
   8, Net builder packet tool with lua_protobuf, as you can choose google protobuf or other protocol format.   
   9, Common utility functions such as ansi2utf, and utf2ansi, which are wrapped in utility.lua. 
+  10, xml parse module and csv parse module.
 
 In a word, you can find anything here for server programming(especially for game server).
 
