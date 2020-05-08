@@ -73,7 +73,7 @@ function AddTable(t, value)
     t[#t + 1] = value;
 end
 
--- reload lua file
+-- reload lua file(must a correct path).
 function Reload(szLuaFile)
 	if not szLuaFile then
 		return false;
@@ -143,7 +143,7 @@ function InstallSpecialLoader()
     table_insert(loaders, 1, loadfn);
 end
 
--- global rand method.
+-- global rand method, return a value between [min, max].
 function GetRand(min, max)
 	max = max or min;
 	local rand = common.rand or math.random;

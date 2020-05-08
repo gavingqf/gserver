@@ -152,7 +152,9 @@ function MysqlModule:Async_update(sql, index, func)
         Log:Crit("async update func is nil");
         return MysqlExecutevariable.MYSQL_EXECUTE_UNKNOWN, "func is nil";
     end
-    if not index then index = GetRand(0, self.m_count - 1) end
+    if not index then 
+        index = GetRand(0, self.m_count - 1);
+    end
     -- async execution.
     return db.mysql_async_query_no_res(self.m_handle, index, sql, func);
 end
@@ -166,7 +168,9 @@ function MysqlModule:Async_query(sql, index, func)
         Log:Crit("async update func is nil");
         return MysqlExecutevariable.MYSQL_EXECUTE_UNKNOWN, "func is nil";
     end
-    if not index then index = GetRand(0, self.m_count - 1) end
+    if not index then 
+        index = GetRand(0, self.m_count - 1);
+    end
 
     return db.mysql_async_query_with_res(self.m_handle, index, sql, func);
 end
