@@ -3,7 +3,7 @@
 --
 local pb     = require "common.pb_module"
 local Log    = require "common.log_module"
-local pbcall = pbcall;
+local pcall = pcall;
 local Timer  = require "common.timer"
 
 global_qps_count = 0;
