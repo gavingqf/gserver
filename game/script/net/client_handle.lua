@@ -49,7 +49,7 @@ end
 function client_handler:ProcessTimeReq(role, data, len)
     -- local now = os.date("%Y-%m-%d %H:%M:%S", os.time());
     local time_ack = {
-        time = "gavin123",s
+        time = "gavin123",
     }
     role:Send("SProtoSpace.sc_time_ack", time_ack);
 
