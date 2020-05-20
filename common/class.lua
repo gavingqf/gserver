@@ -1,4 +1,4 @@
-local _class = {}
+local _class = {}; -- it is resonable to be as local?
 
 --[[
 	usage:
@@ -21,8 +21,8 @@ local _class = {}
 
 ------------------------ start define class function --------------------
 -- base is base class, and _ctor is construct function, gc is gc function.
-function class(base, _ctor, gc)
-	local c = { -- return class table.
+function class(base, _ctor)
+	local c = { -- return c(class) table.
 		Ctor     = false,
 		__base__ = base,
 	};
@@ -39,8 +39,6 @@ function class(base, _ctor, gc)
         c.Ctor = _ctor;
 		c.__base__ = base;
 	end
-
-	if not gc then gc = false end
 
 	-- the onlye new function: new() or class();
 	local function _new(...)
@@ -72,7 +70,7 @@ function class(base, _ctor, gc)
 		-- set __index and __gc memta function.
 		setmetatable(o, {
 			__index = _class[c], --[[note: _class[c] = vtbl]]
-			__gc    = function (ins) release(_class[c], ins) end
+			__gc    = function(ins) release(_class[c], ins) end -- here is _class[c], not c.
 		});
 
 		-- create from c.
@@ -90,7 +88,9 @@ function class(base, _ctor, gc)
 	vtbl.is_a = function(self, klass)
 		local m = c;
 		while m do 
-			if m == klass then return true end
+			if m == klass then 
+				return true;
+			end
 			m = m.__base__;
 		end
 		return false;
@@ -124,3 +124,7 @@ function class(base, _ctor, gc)
 	return c;
 end
 --------------------- end of class define --------------------
+
+function resetclass(c)
+	_class[c] = nil;
+end
